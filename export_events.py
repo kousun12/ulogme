@@ -20,7 +20,7 @@ def loadEvents(fname):
     events = []
     for w in ws:
       ix = w.find(' ') # find first space, that's where stamp ends
-      stamp = int(w[:ix])
+      stamp = int(float(w[:ix]))
       str = w[ix+1:]
       events.append({'t':stamp, 's':str})
   except Exception, e:
@@ -50,7 +50,12 @@ def updateEvents():
   L.extend(glob.glob("logs/notes_*.txt"))
 
   # extract all times. all log files of form {type}_{stamp}.txt
-  ts = [int(x[x.find('_')+1:x.find('.txt')]) for x in L]
+  ts = []
+  for x in L:
+    as_st = x[x.find('_') + 1:x.find('.txt')]
+    if as_st:
+      ts.append(int(float(as_st)))
+
   ts = list(set(ts))
   ts.sort()
 
